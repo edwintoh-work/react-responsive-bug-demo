@@ -30,6 +30,7 @@
     "rimraf": "^2.4.3"
   },
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "express-device": "^0.4.2"
   }
 }

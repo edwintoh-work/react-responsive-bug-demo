@@ -1,4 +1,5 @@
 const express = require('express');
+const device = require('express-device');
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -21,33 +22,37 @@ const smallStyle = {
   color: 'white',
 };
 
-const deviceWidth = 1600;
+app.use(device.capture());
+
+var deviceWidth = 1600;
 
 app.get('/', (req, res) => {
+  console.log(req.device.type);
+
+  switch(req.device.type) {
+    case 'desktop':
+      deviceWidth = 1024;
+      break;
+    case 'tablet':
+      deviceWidth = 760;
+      break;
+    case 'phone':
+      deviceWidth = 320;
+      break;
+  }
+
   res.send(
     renderToString(
       <div>
         <div>Device Test!</div>
-        <MediaQuery minDeviceWidth={1224} values={{deviceWidth: deviceWidth}}>
+        <MediaQuery minDeviceWidth={1024} values={{deviceWidth: deviceWidth}}>
           <div>You are a desktop or laptop</div>
-          <MediaQuery minDeviceWidth={1824} values={{deviceWidth: deviceWidth}}>
-            <div>You also have a huge screen</div>
-          </MediaQuery>
-          <MediaQuery maxWidth={1224} values={{deviceWidth: deviceWidth}}>
-            <div>You are sized like a tablet or mobile phone though</div>
-          </MediaQuery>
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={1224} values={{deviceWidth: deviceWidth}}>
-          <div>You are a tablet or mobile phone</div>
+        <MediaQuery maxWidth={1023} values={{deviceWidth: deviceWidth}}>
+          <div>You are a tablet</div>
         </MediaQuery>
-        <MediaQuery orientation='portrait' values={{deviceWidth: deviceWidth}}>
-          <div>You are portrait</div>
-        </MediaQuery>
-         <MediaQuery orientation='landscape' values={{deviceWidth: deviceWidth}}>
-          <div>You are landscape</div>
-        </MediaQuery>
-        <MediaQuery minResolution='2dppx' values={{deviceWidth: deviceWidth}}>
-          <div>You are retina</div>
+        <MediaQuery maxDeviceWidth={480} values={{deviceWidth: deviceWidth}}>
+          <div>You are a mobile phone</div>
         </MediaQuery>
       </div>));
 });
