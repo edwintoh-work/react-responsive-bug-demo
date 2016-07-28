@@ -21,18 +21,33 @@ const smallStyle = {
   color: 'white',
 };
 
-const deviceWidth = 200;
-const width = 200;
+const deviceWidth = 1600;
 
 app.get('/', (req, res) => {
   res.send(
     renderToString(
       <div>
-        <MediaQuery minDeviceWidth={1224} values={{deviceWidth}}>
-          <div style={bigStyle}>I am big</div>
+        <div>Device Test!</div>
+        <MediaQuery minDeviceWidth={1224} values={{deviceWidth: deviceWidth}}>
+          <div>You are a desktop or laptop</div>
+          <MediaQuery minDeviceWidth={1824} values={{deviceWidth: deviceWidth}}>
+            <div>You also have a huge screen</div>
+          </MediaQuery>
+          <MediaQuery maxWidth={1224} values={{deviceWidth: deviceWidth}}>
+            <div>You are sized like a tablet or mobile phone though</div>
+          </MediaQuery>
         </MediaQuery>
-        <MediaQuery maxWidth={1000} values={{ width }}>
-          <div style={smallStyle}>I am small</div>
+        <MediaQuery maxDeviceWidth={1224} values={{deviceWidth: deviceWidth}}>
+          <div>You are a tablet or mobile phone</div>
+        </MediaQuery>
+        <MediaQuery orientation='portrait' values={{deviceWidth: deviceWidth}}>
+          <div>You are portrait</div>
+        </MediaQuery>
+         <MediaQuery orientation='landscape' values={{deviceWidth: deviceWidth}}>
+          <div>You are landscape</div>
+        </MediaQuery>
+        <MediaQuery minResolution='2dppx' values={{deviceWidth: deviceWidth}}>
+          <div>You are retina</div>
         </MediaQuery>
       </div>));
 });
